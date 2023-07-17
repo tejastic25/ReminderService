@@ -23,11 +23,11 @@ const PrepareandStartServer = () => {
 
         );
 
-        //cron-schedules task
+        //cron - schedules task
 
-        // cron.schedule('*/1 * * * * *', () => {
-        //     console.log('running a task every minute');
-        // });
+        cron.schedule('*/10 * * * * *', () => {
+            console.log('running a task every minute');
+        });
     })
 }
 PrepareandStartServer();
