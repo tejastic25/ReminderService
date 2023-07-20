@@ -9,26 +9,36 @@ const sender = require('../config/email-config');
  * by now  and is pending
  */
 
-const SetupJobs = async () => {
 
-    // cron - schedules task
-    cron.schedule('*/100 * * * *', async () => {
+const SetupJobs = async () => {
+    cron.schedule('*/10 * * * * *', async () => {
         const response = await emailService.fetchPendingEmail();
-        response.forEach((email) => {
+        response.forEach(async (email) => {
+            console.log(email);
+            //  await   emailService.sendBasicEmail(
+            //         "reminderservice@airline.com",
+            //         email.recipientEmail,
+            //         email.subject,
+            //         email.content
+            //     )
+
             sender.sendMail({
                 to: email.recipientEmail,
                 subject: email.subject,
                 text: email.content
-            }, async (err, data) => {
-                if (err) {
-                    console.log(err);
-                } else {
-                    console.log(data);
-                    await emailService.updateTicket(email.id, { status: "SUCCESS" });
-                }
-            });
+            }
+                , async (err, data) => {
+                    if (err) {
+                        console.log(err);
+                    } else {
+                        console.log(data);
+                        console.log("update started");
+                        await emailService.updateNotification(email.id, { status: "SUCCESS" });
+                        console.log("updated");
+                    }
+                });
         });
-        console.log(response);
+        // console.log(response);
     });
 }
 

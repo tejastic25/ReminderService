@@ -5,7 +5,7 @@ class NotificationRepository {
     async create(data) {
         try {
             const notification = await NotificationTicket.create(data);
-            console.log(notification);
+            // console.log(notification);
             return notification;
 
         } catch (error) {
@@ -43,11 +43,12 @@ class NotificationRepository {
     }
     async update(ticketId, data) {
         try {
-            const notification = await NotificationTicket.findByPK(ticketId);
+            const notification = await NotificationTicket.findByPk(ticketId);
             if (data.status) {
-                notification.status = "Booked"
+                notification.status = data.status
             }
             await notification.save();
+            // console.log("update done");
             return notification
 
         } catch (error) {
